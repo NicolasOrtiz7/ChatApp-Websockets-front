@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import { ApiResponse, Message, User } from 'src/app/models/message';
 import { ChatService } from 'src/app/services/chat.service';
+import { MessageService } from 'src/app/services/message.service';
 import { UserService } from 'src/app/services/user.service';
 
 @Component({
@@ -18,14 +20,22 @@ export class ChatComponent implements OnInit{
   apiResponse: ApiResponse = new ApiResponse();
   usersList: User[] = [];
 
+  messagesList: any[] = [];
 
-  constructor(private chatService: ChatService, private userService: UserService){
+
+  constructor(
+    private route: ActivatedRoute,
+    private messageService: MessageService,
+    private chatService: ChatService, 
+    private userService: UserService,
+    ){
   }
 
   ngOnInit(): void {
-    this.chatService.joinChat(1); // Se conecta al chat
     this.initMessageEntity();
-    this.getUsers()
+    this.messageService.joinChat(1); // Se conecta al chat
+    this.getUsers();
+    this.listenerMessage();
   }
 
   // ---------------- Mensajes ----------------
@@ -35,19 +45,29 @@ export class ChatComponent implements OnInit{
     this.message.receiverUser = this.receiverUser;
   }
 
+
+
   sendMessage(){
     this.senderUser.id = this.currentSenderUser();
     this.receiverUser.id = this.currentReceiverUser();
 
-    this.chatService.sendMessage(this.currentReceiverUser(), this.message);
+    this.messageService.sendMessage(this.currentReceiverUser(), this.message);
     this.message.content = ""
   }
+
+
+  listenerMessage(){
+    this.messageService.getMessageSubject().subscribe((messages: any) => {
+      this.messagesList = messages
+    })
+  }
+
 
   currentSenderUser(){ // Obtiene el id del remitente desde su token en localStorage
     return 1;
   }
   currentReceiverUser(){ // Obtiene el id del receptor (del chat abierto)
-    return 2;
+    return this.route.snapshot.params['id'];
   }
   
 
