@@ -31,8 +31,9 @@ export class MessageService {
   joinChat(chatId: number) {
     this.stompClient.connect({}, () => {
       this.stompClient.subscribe(`/topic/${chatId}`, (messages: any) => {
+
+        // Guarda el mensaje en el array para mostrarlo en el chat de la otra persona
         const messageContent = JSON.parse(messages.body);
-  
         const currentMessages = this.messageSubject.getValue(); // Obtener mensajes actuales
         const updatedMessages = [...currentMessages, messageContent]; // Agregar el nuevo mensaje
         this.messageSubject.next(updatedMessages); // Emitir todos los mensajes
@@ -50,17 +51,11 @@ export class MessageService {
     // Envía el mensaje
     this.stompClient.send(`/app/chat/${chatId}`, {}, JSON.stringify(message));
 
-    // Guarda el mensaje en un array para mostrarlo
+    // Guarda el mensaje en el array para mostrarlo en mi chat
     const currentMessages = this.messageSubject.getValue();
     const updatedMessages = [...currentMessages, { ...message }]; // Crear una nueva instancia del mensaje
     this.messageSubject.next(updatedMessages); // Emitir el nuevo array de mensajes
   }
 
-
-  getCurrentChatId() {
-    if (localStorage.getItem("currentChatId")) {
-      return localStorage.getItem("currentChatId")
-    } else return 0;
-  }
 
 }

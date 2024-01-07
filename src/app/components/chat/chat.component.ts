@@ -1,7 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { NgForm } from '@angular/forms';
+import { Component, ElementRef, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ApiResponse } from 'src/app/models/api-response';
 import { Message } from 'src/app/models/message';
 import { User } from 'src/app/models/user';
 import { ChatService } from 'src/app/services/chat.service';
@@ -14,6 +12,8 @@ import { UserService } from 'src/app/services/user.service';
   styleUrls: ['./chat.component.css']
 })
 export class ChatComponent implements OnInit {
+
+  myUserId: number;
 
   message: Message = new Message();
   senderUser: User = new User();
@@ -29,15 +29,17 @@ export class ChatComponent implements OnInit {
     private router: Router,
     private messageService: MessageService,
     private chatService: ChatService,
-    private userService: UserService,
+    private userService: UserService
   ) {
   }
 
   ngOnInit(): void {
-    this.initMessageEntity();
-    this.messageService.joinChat(this.currentSenderUser()); // Se conecta al chat
-    this.getUsers();
-    this.listenerMessage();
+    this.myUserId = this.currentSenderUser(); // Obtiene el id de mi usuario
+    this.initMessageEntity(); // Inicia el objeto Message
+    this.messageService.joinChat(this.currentSenderUser()); // Suscribirse a mi propio canal para escuchar mensajes
+    this.getChatOnInit(); // Obtiene los mensajes de la url al cargar la página
+    this.getUsers(); // Obtiene los usuarios con los que se puede chatear
+    this.messageListener(); // Está a la escucha de mensajes para mostrarlos en el chat
   }
 
   // ---------------- Mensajes ----------------
@@ -49,7 +51,6 @@ export class ChatComponent implements OnInit {
   }
 
 
-
   sendMessage() {
     this.senderUser.id = this.currentSenderUser();
     this.receiverUser.id = this.currentReceiverUser();
@@ -59,7 +60,9 @@ export class ChatComponent implements OnInit {
     this.message.content = "";
   }
 
-  listenerMessage() {
+
+  // Escucha los mensajes que se envían y los mete en el array (no escucha los mensajes entrantes)
+  messageListener() {
     this.messageService.getMessageSubject().subscribe((newMessages: Message[]) => {
       const lastMessage = newMessages[newMessages.length - 1]; // Obtener el último mensaje de los recibidos
   
@@ -71,30 +74,43 @@ export class ChatComponent implements OnInit {
     });
   }
   
-  
-  
 
   getChat(userId: number) {
-    // Borra los mensajes del array
+    // Evita que se cargue nuevamente el chat que ya está cargado
+    if(userId == this.route.snapshot.params['id']) return 
+
+    // Borra los mensajes precargados del array
     this.messagesList = [];
 
+    // Navega a la url con el id del otro usuario
     this.router.navigate(['/chat', userId]).then(()=>{
-      // Obtiene los mensajes de base de datos
+      // Obtiene los mensajes de la base de datos y los guarda en el array messagesList
       this.chatService.getChatByUserIds(this.currentSenderUser(), this.currentReceiverUser()).subscribe(
         data => this.messagesList = data.response.messages,
         err => console.log(err))
     });
+    
+  }
 
+  // Carga los mensajes al iniciar la página
+  getChatOnInit(){
+    this.chatService.getChatByUserIds(this.currentSenderUser(), this.currentReceiverUser()).subscribe(
+      data => {
+        this.messagesList = data.response.messages;
+      },
+      err => console.log(err))
   }
 
 
-  currentSenderUser(): number { // Obtiene el id del remitente desde su token en localStorage
+  // Obtiene el id del remitente desde su token en localStorage
+  currentSenderUser(): number { 
     const userId = localStorage.getItem('user');
     const userIdInt = userId ? parseInt(userId) : 0;
     return Number.isNaN(userIdInt) ? 0 : userIdInt;
   }
-  
-  currentReceiverUser() { // Obtiene el id del receptor (del chat abierto)
+
+  // Obtiene el id del receptor (del chat abierto)
+  currentReceiverUser() { 
     return this.route.snapshot.params['id'];
   }
 
@@ -107,5 +123,8 @@ export class ChatComponent implements OnInit {
       err => console.log(err)
     )
   }
+
+  // ---------------- DOM ----------------
+
 
 }

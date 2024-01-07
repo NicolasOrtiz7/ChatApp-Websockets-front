@@ -1,7 +1,4 @@
-<link
-  href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css"
-  rel="stylesheet"
-/>
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" />
 <div class="container">
   <!-- Page header start -->
   <div class="page-title">
@@ -36,19 +33,16 @@
                 </div>
                 <ul class="users">
 
-                    <li (click)="getChat(u.id)" *ngFor="let u of usersList" class="person">
-                        <div class="user">
-                          <img
-                            src="https://www.bootdey.com/img/Content/avatar/avatar3.png"
-                            alt="Retail Admin"
-                          />
-                          <span class="status busy"></span>
-                        </div>
-                        <p class="name-time">
-                          <span class="name">{{u.name}}</span>
-                          <span class="time">15/02/2019</span>
-                        </p>
-                      </li>
+                  <li (click)="getChat(u.id)" *ngFor="let u of usersList" class="person">
+                    <div class="user">
+                      <img src="https://www.bootdey.com/img/Content/avatar/avatar3.png" alt="Retail Admin" />
+                      <span class="status busy"></span>
+                    </div>
+                    <p class="name-time">
+                      <span class="name">{{u.name}}</span>
+                      <span class="time">15/02/2019</span>
+                    </p>
+                  </li>
 
                   <!-- <li class="person" data-chat="person1">
                     <div class="user">
@@ -118,23 +112,25 @@
 
 
 
-                  <li *ngFor="let i of messagesList" class="chat-left">
+                  <li *ngFor="let i of messagesList" [ngClass]="{
+                    'chat-left': i.senderUser.id !== myUserId,
+                    'chat-right': i.senderUser.id === myUserId
+                  }">
                     <div class="chat-avatar">
-                      <img
-                        src="https://www.bootdey.com/img/Content/avatar/avatar3.png"
-                        alt="Retail Admin"
-                      />
-                      <div class="chat-name">{{i.senderUser.name}}</div>
+                      <img *ngIf="i.senderUser.id !== myUserId"
+                        src="https://www.bootdey.com/img/Content/avatar/avatar3.png" alt="profile picture" />
+                      <div *ngIf="i.senderUser.id !== myUserId" class="chat-name">{{i.senderUser.name}}</div>
                     </div>
                     <div class="chat-text">
                       {{i.content}}
                     </div>
-                    <div class="chat-hour">
+                    <div style="margin: 20px;" class="chat-hour">
                       08:55 <span class="fa fa-check-circle"></span>
                     </div>
                   </li>
 
-                  <!-- <li class="chat-left">
+                  <!-- 
+                    <li class="chat-left">
                     <div class="chat-avatar">
                       <img
                         src="https://www.bootdey.com/img/Content/avatar/avatar3.png"
@@ -176,16 +172,12 @@
 
               </div>
               <div class="form-group mt-3 mb-0">
-                <form (ngSubmit)="sendMessage()">
-                  <input
-                    type="text"
-                    name="content"
-                    class="form-control"
-                    [(ngModel)]="message.content"
-                  />
+                <form (ngSubmit)="sendMessage()" style="display: flex; gap: 8px; align-items: center;">
+                  <input [(ngModel)]="message.content" type="text" name="content" class="form-control" style="flex: 1;" />
                   <button class="btn btn-primary">Enviar</button>
                 </form>
               </div>
+              
 
               <!-- FIN CHAT MENSAJES -->
             </div>
