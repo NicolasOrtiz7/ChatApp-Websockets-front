@@ -124,6 +124,16 @@ export class ChatComponent implements OnInit {
     )
   }
 
+  selectUser(){
+    this.router.navigate(['/login'])
+  }
+
+  logout(){
+    localStorage.removeItem('user');
+    alert("Sesión cerrada, selecciona un usuario para empezar a chatear");
+    this.selectUser();
+  }
+
   // ---------------- DOM ----------------
 
 

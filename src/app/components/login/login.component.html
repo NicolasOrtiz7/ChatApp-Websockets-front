@@ -1,0 +1,58 @@
+<!-- Section: Design Block -->
+<section class="background-radial-gradient overflow-hidden">
+
+
+    <div class="container px-4 py-5 px-md-5 text-center text-lg-start my-5">
+        <div class="row gx-lg-5 align-items-center mb-5">
+
+            <div style="width: 500px; margin: auto;" class="col-lg-6 mb-5 mb-lg-0 position-relative">
+                <div id="radius-shape-1" class="position-absolute rounded-circle shadow-5-strong"></div>
+                <div id="radius-shape-2" class="position-absolute shadow-5-strong"></div>
+
+                <div class="card bg-glass">
+                    <div class="card-body px-4 py-5 px-md-5">
+                        <form style="text-align: center;">
+                            <p>Crear usuario</p>
+                            <!-- Nombre input -->
+                            <div class="form-outline mb-4">
+                                <input disabled placeholder="Nombre (deshabilitado por ahora)" type="text" id="name" class="form-control" />
+                            </div>
+
+                            <!-- Nombre Usuario input -->
+                            <div class="form-outline mb-4">
+                                <input disabled placeholder="Nombre de usuario (deshabilitado por ahora)" type="text" id="username" class="form-control" />
+                            </div>
+
+                            <!-- Contraseña input -->
+                            <div class="form-outline mb-4">
+                                <input disabled placeholder="Contraseña (deshabilitado por ahora)" type="text"
+                                    id="form3Example4" class="form-control" />
+                            </div>
+
+
+                            <!-- Submit button -->
+                            <button disabled type="submit" class="btn btn-primary btn-block mb-4">
+                                Iniciar sesión
+                            </button>
+
+                            <!-- Register buttons -->
+                            <div class="text-center">
+                                <p>o elegir un usuario ya creado</p>
+                                <button (click)="selectUser(u.id)" *ngFor="let u of usersList" type="button"
+                                    class="btn btn-link btn-floating mx-1"  style="text-decoration: none;">
+                                    <div class="user">
+                                        <img class="img-small"
+                                            src="https://www.bootdey.com/img/Content/avatar/avatar3.png"
+                                            alt="profile picture" />
+                                    </div>
+                                    <p>{{u.name}}</p>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Section: Design Block -->

@@ -18,4 +18,8 @@ export class UserService {
     return this.http.get<ApiResponse>(this.URL)
   }
 
+  saveUser(){
+    // Implementar
+  }
+
 }

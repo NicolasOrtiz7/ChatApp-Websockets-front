@@ -1,13 +1,13 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { ChatComponent } from './components/chat/chat.component';
+import { LoginComponent } from './components/login/login.component';
 
 const routes: Routes = [
+  {path: 'login', component: LoginComponent},
   {path: 'chat', component: ChatComponent},
   {path: 'chat/:id', component: ChatComponent},
-  {path: '**', pathMatch: 'full', redirectTo: 'chat'}
-
-  
+  {path: '**', pathMatch: 'full', redirectTo: 'login'}
 ];
 
 @NgModule({

@@ -44,6 +44,8 @@
                     </p>
                   </li>
 
+
+
                   <!-- <li class="person" data-chat="person1">
                     <div class="user">
                       <img
@@ -97,14 +99,17 @@
                       <span class="time">11/02/2019</span>
                     </p>
                   </li> -->
-
-
                 </ul>
+                <div style="display: flex; gap: 15px;">
+                  <button (click)="selectUser()" style="width: 150px;" class="btn btn-primary">Cambiar usuario</button>
+                  <button (click)="logout()" style="width: 150px;" class="btn btn-danger">Cerrar sesión</button>
+                </div>
+
               </div>
             </div>
             <div class="col-xl-8 col-lg-8 col-md-8 col-sm-9 col-9">
               <div class="selected-user">
-                <span>To: <span class="name">Emily Russell</span></span>
+                <span class="name">Nombre de usuario</span>
               </div>
               <!-- CHAT MENSAJES -->
               <div class="chat-container">
@@ -173,11 +178,12 @@
               </div>
               <div class="form-group mt-3 mb-0">
                 <form (ngSubmit)="sendMessage()" style="display: flex; gap: 8px; align-items: center;">
-                  <input [(ngModel)]="message.content" type="text" name="content" class="form-control" style="flex: 1;" />
+                  <input [(ngModel)]="message.content" type="text" name="content" class="form-control"
+                    style="flex: 1;" />
                   <button class="btn btn-primary">Enviar</button>
                 </form>
               </div>
-              
+
 
               <!-- FIN CHAT MENSAJES -->
             </div>
