@@ -60,12 +60,19 @@ export class ChatComponent implements OnInit {
   }
 
   listenerMessage() {
-    this.messageService.getMessageSubject().subscribe((messages: any) => {
-      this.messagesList = messages.map((item: Message) => ({
-        ...item
-      }))
-    })
+    this.messageService.getMessageSubject().subscribe((newMessages: Message[]) => {
+      const lastMessage = newMessages[newMessages.length - 1]; // Obtener el último mensaje de los recibidos
+  
+      if (lastMessage) {
+        const currentMessages = [...this.messagesList]; // Obtener mensajes actuales
+        currentMessages.push(lastMessage); // Agregar el último mensaje al array
+        this.messagesList = currentMessages; // Actualizar la lista de mensajes
+      }
+    });
   }
+  
+  
+  
 
   getChat(userId: number) {
     // Borra los mensajes del array
