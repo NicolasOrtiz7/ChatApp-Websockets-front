@@ -36,7 +36,7 @@
                 </div>
                 <ul class="users">
 
-                    <li *ngFor="let u of usersList" class="person">
+                    <li (click)="getChat(u.id)" *ngFor="let u of usersList" class="person">
                         <div class="user">
                           <img
                             src="https://www.bootdey.com/img/Content/avatar/avatar3.png"
@@ -124,7 +124,7 @@
                         src="https://www.bootdey.com/img/Content/avatar/avatar3.png"
                         alt="Retail Admin"
                       />
-                      <div class="chat-name">Russell</div>
+                      <div class="chat-name">{{i.senderUser.name}}</div>
                     </div>
                     <div class="chat-text">
                       {{i.content}}

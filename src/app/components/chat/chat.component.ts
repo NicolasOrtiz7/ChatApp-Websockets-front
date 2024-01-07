@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
-import { ApiResponse, Message, User } from 'src/app/models/message';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ApiResponse } from 'src/app/models/api-response';
+import { Message } from 'src/app/models/message';
+import { User } from 'src/app/models/user';
 import { ChatService } from 'src/app/services/chat.service';
 import { MessageService } from 'src/app/services/message.service';
 import { UserService } from 'src/app/services/user.service';
@@ -17,7 +19,6 @@ export class ChatComponent implements OnInit {
   senderUser: User = new User();
   receiverUser: User = new User();
 
-  apiResponse: ApiResponse = new ApiResponse();
   usersList: User[] = [];
 
   messagesList: Message[] = [];
@@ -25,6 +26,7 @@ export class ChatComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private messageService: MessageService,
     private chatService: ChatService,
     private userService: UserService,
@@ -60,9 +62,6 @@ export class ChatComponent implements OnInit {
 
     this.messageService.sendMessage(this.currentReceiverUser(), this.message);
     this.message.content = "";
-
-    console.log(JSON.stringify(this.messagesList));
-    
   }
 
   listenerMessage() {
@@ -71,6 +70,20 @@ export class ChatComponent implements OnInit {
         ...item
       }))
     })
+  }
+
+  getChat(userId: number) {
+    this.router.navigate(['/chat', userId]);
+    
+    // Borra los mensajes del array
+    this.messagesList = [];
+    
+    // Obtiene los mensajes de base de datos
+    this.chatService.getChatByUserIds(this.currentSenderUser(), this.currentReceiverUser()).subscribe(
+      data => {
+        this.messagesList = data.response.messages;
+      },
+    )
   }
 
 
@@ -87,8 +100,7 @@ export class ChatComponent implements OnInit {
   getUsers() {
     this.userService.getUsers().subscribe(
       data => {
-        this.apiResponse = data;
-        this.usersList = this.apiResponse.response;
+        this.usersList = data.response
       },
       err => console.log(err)
 
