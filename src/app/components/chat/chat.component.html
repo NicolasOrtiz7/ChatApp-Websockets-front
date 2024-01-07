@@ -117,7 +117,24 @@
                 <ul class="chat-box chatContainerScroll">
 
 
-                  <li class="chat-left">
+
+                  <li *ngFor="let i of messagesList" class="chat-left">
+                    <div class="chat-avatar">
+                      <img
+                        src="https://www.bootdey.com/img/Content/avatar/avatar3.png"
+                        alt="Retail Admin"
+                      />
+                      <div class="chat-name">Russell</div>
+                    </div>
+                    <div class="chat-text">
+                      {{i.content}}
+                    </div>
+                    <div class="chat-hour">
+                      08:55 <span class="fa fa-check-circle"></span>
+                    </div>
+                  </li>
+
+                  <!-- <li class="chat-left">
                     <div class="chat-avatar">
                       <img
                         src="https://www.bootdey.com/img/Content/avatar/avatar3.png"
@@ -149,7 +166,7 @@
                       />
                       <div class="chat-name">Sam</div>
                     </div>
-                  </li>
+                  </li> -->
 
 
 
@@ -169,6 +186,9 @@
                   <button class="btn btn-primary">Enviar</button>
                 </form>
               </div>
+
+              <button (click)="test()">TEST</button>
+
               <!-- FIN CHAT MENSAJES -->
             </div>
           </div>

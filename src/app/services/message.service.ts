@@ -16,44 +16,44 @@ export class MessageService {
   private messageSubject: BehaviorSubject<Message[]> = new BehaviorSubject<Message[]>([]);
 
 
-  constructor(private chatService: ChatService) { 
+  constructor(private chatService: ChatService) {
     this.connectSocket();
   }
 
 
-  connectSocket(){
+  connectSocket() {
     const url = "http://localhost:8080/chat-socket";
     const socket = new SockJS(url);
     this.stompClient = Stomp.over(socket);
   }
 
 
-  joinChat(chatId: number){
-    this.stompClient.connect({}, ()=>{
-      this.stompClient.subscribe(`/topic/${chatId}`, (messages: any)=>{
+  joinChat(chatId: number) {
+    this.stompClient.connect({}, () => {
+      this.stompClient.subscribe(`/topic/${chatId}`, (messages: any) => {
         const messageContent = JSON.parse(messages.body);
-
-
-
-        this.messageSubject.next(messageContent);
-
-
       })
     })
   }
 
-  getMessageSubject(){
+  getMessageSubject() {
     return this.messageSubject.asObservable();
   }
 
 
-  sendMessage(chatId: number, message: any){
+  sendMessage(chatId: number, message: Message) {
+    // Envía el mensaje
     this.stompClient.send(`/app/chat/${chatId}`, {}, JSON.stringify(message));
+
+    // Guarda el mensaje en un array para mostrarlo
+    const currentMessages = this.messageSubject.getValue();
+    const updatedMessages = [...currentMessages, { ...message }]; // Crear una nueva instancia del mensaje
+    this.messageSubject.next(updatedMessages); // Emitir el nuevo array de mensajes
   }
 
 
-  getCurrentChatId(){
-    if(localStorage.getItem("currentChatId")){
+  getCurrentChatId() {
+    if (localStorage.getItem("currentChatId")) {
       return localStorage.getItem("currentChatId")
     } else return 0;
   }
