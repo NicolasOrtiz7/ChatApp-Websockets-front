@@ -35,18 +35,13 @@ export class ChatComponent implements OnInit {
 
   ngOnInit(): void {
     this.initMessageEntity();
-    this.messageService.joinChat(1); // Se conecta al chat
+    this.messageService.joinChat(this.currentSenderUser()); // Se conecta al chat
     this.getUsers();
     this.listenerMessage();
   }
 
   // ---------------- Mensajes ----------------
 
-
-  test() {
-    console.log(this.messagesList);
-
-  }
 
   initMessageEntity() {
     this.message.senderUser = this.senderUser;
@@ -73,23 +68,25 @@ export class ChatComponent implements OnInit {
   }
 
   getChat(userId: number) {
-    this.router.navigate(['/chat', userId]);
-    
     // Borra los mensajes del array
     this.messagesList = [];
-    
-    // Obtiene los mensajes de base de datos
-    this.chatService.getChatByUserIds(this.currentSenderUser(), this.currentReceiverUser()).subscribe(
-      data => {
-        this.messagesList = data.response.messages;
-      },
-    )
+
+    this.router.navigate(['/chat', userId]).then(()=>{
+      // Obtiene los mensajes de base de datos
+      this.chatService.getChatByUserIds(this.currentSenderUser(), this.currentReceiverUser()).subscribe(
+        data => this.messagesList = data.response.messages,
+        err => console.log(err))
+    });
+
   }
 
 
-  currentSenderUser() { // Obtiene el id del remitente desde su token en localStorage
-    return 1;
+  currentSenderUser(): number { // Obtiene el id del remitente desde su token en localStorage
+    const userId = localStorage.getItem('user');
+    const userIdInt = userId ? parseInt(userId) : 0;
+    return Number.isNaN(userIdInt) ? 0 : userIdInt;
   }
+  
   currentReceiverUser() { // Obtiene el id del receptor (del chat abierto)
     return this.route.snapshot.params['id'];
   }
@@ -99,11 +96,8 @@ export class ChatComponent implements OnInit {
 
   getUsers() {
     this.userService.getUsers().subscribe(
-      data => {
-        this.usersList = data.response
-      },
+      data => this.usersList = data.response,
       err => console.log(err)
-
     )
   }
 

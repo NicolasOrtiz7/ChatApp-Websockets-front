@@ -32,6 +32,12 @@ export class MessageService {
     this.stompClient.connect({}, () => {
       this.stompClient.subscribe(`/topic/${chatId}`, (messages: any) => {
         const messageContent = JSON.parse(messages.body);
+
+        const currentMessage = this.messageSubject.getValue();
+        currentMessage.push(messageContent);
+        this.messageSubject.next(currentMessage);
+
+
       })
     })
   }
