@@ -61,39 +61,51 @@ export class ChatComponent implements OnInit {
   }
 
 
-  // Escucha los mensajes que se envían y los mete en el array (no escucha los mensajes entrantes)
+  // Escucha los nuevos mensajes recibidos a través del servicio de mensajes.
+  // Cuando se recibe un nuevo mensaje, se agrega al array de mensajes existente
   messageListener() {
+    // Suscribe la función al observable del servicio de mensajes
     this.messageService.getMessageSubject().subscribe((newMessages: Message[]) => {
-      const lastMessage = newMessages[newMessages.length - 1]; // Obtener el último mensaje de los recibidos
-  
+      // Obtiene el último mensaje recibido
+      const lastMessage = newMessages[newMessages.length - 1];
+
+      // Verifica si hay un último mensaje
       if (lastMessage) {
-        const currentMessages = [...this.messagesList]; // Obtener mensajes actuales
-        currentMessages.push(lastMessage); // Agregar el último mensaje al array
-        this.messagesList = currentMessages; // Actualizar la lista de mensajes
+        // Crea una copia del array actual de mensajes
+        const currentMessages = [...this.messagesList];
+
+        // Agrega el último mensaje a la lista de mensajes existente
+        currentMessages.push(lastMessage);
+
+        // Actualiza la lista de mensajes con el nuevo mensaje incluido
+        this.messagesList = currentMessages;
       }
     });
   }
-  
+
 
   getChat(userId: number) {
     // Evita que se cargue nuevamente el chat que ya está cargado
-    if(userId == this.route.snapshot.params['id']) return 
+    if (userId == this.route.snapshot.params['id']) return
 
     // Borra los mensajes precargados del array
     this.messagesList = [];
 
     // Navega a la url con el id del otro usuario
-    this.router.navigate(['/chat', userId]).then(()=>{
+    this.router.navigate(['/chat', userId]).then(() => {
       // Obtiene los mensajes de la base de datos y los guarda en el array messagesList
       this.chatService.getChatByUserIds(this.currentSenderUser(), this.currentReceiverUser()).subscribe(
         data => this.messagesList = data.response.messages,
         err => console.log(err))
     });
-    
+
   }
 
   // Carga los mensajes al iniciar la página
-  getChatOnInit(){
+  getChatOnInit() {
+    // Evita hacer una solicitud si no existe parámetro en url
+    if (null == this.route.snapshot.params['id'] || undefined == this.route.snapshot.params['id']) return
+
     this.chatService.getChatByUserIds(this.currentSenderUser(), this.currentReceiverUser()).subscribe(
       data => {
         this.messagesList = data.response.messages;
@@ -103,14 +115,14 @@ export class ChatComponent implements OnInit {
 
 
   // Obtiene el id del remitente desde su token en localStorage
-  currentSenderUser(): number { 
+  currentSenderUser(): number {
     const userId = localStorage.getItem('user');
     const userIdInt = userId ? parseInt(userId) : 0;
     return Number.isNaN(userIdInt) ? 0 : userIdInt;
   }
 
   // Obtiene el id del receptor (del chat abierto)
-  currentReceiverUser() { 
+  currentReceiverUser() {
     return this.route.snapshot.params['id'];
   }
 
@@ -119,22 +131,26 @@ export class ChatComponent implements OnInit {
 
   getUsers() {
     this.userService.getUsers().subscribe(
-      data => this.usersList = data.response,
+      data => {
+        // Guarda todos los usuarios excepto el que tiene mi propio id
+        this.usersList = data.response.filter((u: { id: number; })  => u.id != this.myUserId);
+      },
       err => console.log(err)
     )
   }
 
-  selectUser(){
+  selectUser() {
     this.router.navigate(['/login'])
   }
 
-  logout(){
+  logout() {
     localStorage.removeItem('user');
     alert("Sesión cerrada, selecciona un usuario para empezar a chatear");
     this.selectUser();
   }
 
-  // ---------------- DOM ----------------
+// ---------------- DOM ----------------
 
+// Generar función para bajar el scroll del chat automáticamente
 
 }
