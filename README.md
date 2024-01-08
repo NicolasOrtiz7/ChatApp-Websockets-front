@@ -1,27 +1,40 @@
-# Chatapp
+# Chat App con WebSockets | Angular 15
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 15.0.4.
+Este proyecto es el frontend de una aplicación de chat desarrollada con Angular 15. Se conecta a un servidor backend en Spring boot para proporcionar una interfaz de usuario interactiva para la aplicación de chat en tiempo real.
 
-## Development server
+## Tecnologías necesarias
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+- Angular 15 (CLI 15.2.10)
+- Node 18 (18.12.0)
 
-## Code scaffolding
+## Instalación
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+1. **Clonar el repositorio**
 
-## Build
+    ```bash
+    https://github.com/NicolasOrtiz7/chatapp-websockets-front.git
+    ```
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+2. **Instalar dependencias**
 
-## Running unit tests
+    En la carpeta del proyecto, instala las dependencias de Angular:
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+    ```bash
+    cd chatapp-websockets-front
+    npm install
+    ```
 
-## Running end-to-end tests
+## Uso
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+- Asegúrate de que el servidor backend esté en ejecución. Debes instalarlo en -> https://github.com/NicolasOrtiz7/chatapp-websockets-back
+- Utiliza los comandos de Angular CLI para iniciar la aplicación:
 
-## Further help
+    ```bash
+    ng serve -o
+    ```
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+    Esto iniciará la aplicación en `http://localhost:4200/login`.
+
+- Interactúa con la aplicación de chat a través de tu navegador accediendo a `http://localhost:4200/login`.
+
+
