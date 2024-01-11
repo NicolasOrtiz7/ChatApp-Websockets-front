@@ -23,7 +23,6 @@ export class ChatComponent implements OnInit {
 
   messagesList: Message[] = [];
 
-
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -43,7 +42,6 @@ export class ChatComponent implements OnInit {
   }
 
   // ---------------- Mensajes ----------------
-
 
   initMessageEntity() {
     this.message.senderUser = this.senderUser;
@@ -95,7 +93,7 @@ export class ChatComponent implements OnInit {
     this.router.navigate(['/chat', userId]).then(() => {
       // Obtiene los mensajes de la base de datos y los guarda en el array messagesList
       this.chatService.getChatByUserIds(this.currentSenderUser(), this.currentReceiverUser()).subscribe(
-        data => this.messagesList = data.response.messages,
+        data => {this.messagesList = data.messages; console.log(data)},
         err => console.log(err))
     });
 
@@ -108,7 +106,7 @@ export class ChatComponent implements OnInit {
 
     this.chatService.getChatByUserIds(this.currentSenderUser(), this.currentReceiverUser()).subscribe(
       data => {
-        this.messagesList = data.response.messages;
+        this.messagesList = data.messages;
       },
       err => console.log(err))
   }
@@ -133,7 +131,7 @@ export class ChatComponent implements OnInit {
     this.userService.getUsers().subscribe(
       data => {
         // Guarda todos los usuarios excepto el que tiene mi propio id
-        this.usersList = data.response.filter((u: { id: number; })  => u.id != this.myUserId);
+        this.usersList = data.filter((u: { id: number; })  => u.id != this.myUserId);
       },
       err => console.log(err)
     )

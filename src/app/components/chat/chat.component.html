@@ -44,8 +44,6 @@
                     </p>
                   </li>
 
-
-
                   <!-- <li class="person" data-chat="person1">
                     <div class="user">
                       <img
@@ -115,8 +113,6 @@
               <div class="chat-container">
                 <ul class="chat-box chatContainerScroll">
 
-
-
                   <li *ngFor="let i of messagesList" [ngClass]="{
                     'chat-left': i.senderUser.id !== myUserId,
                     'chat-right': i.senderUser.id === myUserId
@@ -151,7 +147,6 @@
                     </div>
                   </li>
 
-
                   <li class="chat-right">
                     <div class="chat-hour">
                       08:56 <span class="fa fa-check-circle"></span>
@@ -169,21 +164,16 @@
                     </div>
                   </li> -->
 
-
-
                 </ul>
-
-
 
               </div>
               <div class="form-group mt-3 mb-0">
                 <form (ngSubmit)="sendMessage()" style="display: flex; gap: 8px; align-items: center;">
-                  <input [(ngModel)]="message.content" type="text" name="content" class="form-control"
-                    style="flex: 1;" />
+                  <input [(ngModel)]="message.content" autocomplete="off" type="text" name="content"
+                    class="form-control" style="flex: 1;" />
                   <button class="btn btn-primary">Enviar</button>
                 </form>
               </div>
-
 
               <!-- FIN CHAT MENSAJES -->
             </div>

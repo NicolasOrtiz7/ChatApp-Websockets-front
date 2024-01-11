@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Environments } from '../environments';
 import { Observable } from 'rxjs';
-import { ApiResponse } from '../models/api-response';
+import { User } from '../models/user';
 
 @Injectable({
   providedIn: 'root'
@@ -14,8 +14,8 @@ export class UserService {
   URL: string = Environments.apiUrl + "/users";
 
 
-  getUsers(): Observable<ApiResponse>{
-    return this.http.get<ApiResponse>(this.URL)
+  getUsers(): Observable<User[]>{
+    return this.http.get<User[]>(this.URL)
   }
 
   saveUser(){

@@ -21,7 +21,7 @@ export class LoginComponent implements OnInit{
 
   getUsers() {
     this.userService.getUsers().subscribe(
-      data => this.usersList = data.response,
+      data => this.usersList = data,
       err => console.log(err)
     )
   }
