@@ -8,7 +8,7 @@ Este proyecto es el frontend de una aplicación de chat desarrollada con Angular
 - Node 18 (18.12.0)
 
 ## Video de funcionamiento
-https://youtu.be/EWD9xIA7nb0
+<iframe width="560" height="315" src="https://www.youtube.com/embed/EWD9xIA7nb0?si=_HAM_SJnBg76InsG" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
 ## Instalación
 
