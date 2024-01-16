@@ -7,6 +7,9 @@ Este proyecto es el frontend de una aplicación de chat desarrollada con Angular
 - Angular 15 (CLI 15.2.10)
 - Node 18 (18.12.0)
 
+## Video de funcionamiento
+https://youtu.be/EWD9xIA7nb0
+
 ## Instalación
 
 1. **Clonar el repositorio**
